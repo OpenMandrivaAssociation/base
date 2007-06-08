@@ -4,13 +4,12 @@
 
 Summary:	Basic Analysis and Security Engine
 Name:		base
-Version:	1.2.4
+Version:	1.3.6
 Release:	%mkrel 1
 License:	GPL
 Group:		System/Servers
 URL:		http:/base.secureideas.net/
-Source0:	http:/prdownloads.sourceforge.net/secureideas/%{name}-%{version}.tar.bz2
-Source1:	snort_logo.png
+Source0:	http:/prdownloads.sourceforge.net/secureideas/%{name}-%{version}.tar.gz
 Patch0:		base-1.2.4-mdv_conf.diff
 Requires(pre):	apache-mod_php apache-mod_ssl php-mysql php-sockets php-adodb
 Requires:	apache-mod_php apache-mod_ssl php-mysql php-sockets php-adodb
@@ -20,23 +19,20 @@ Requires:	php-pear-Numbers_Words
 Requires:	php-pear-Image_Graph
 BuildArch:	noarch
 BuildRequires:	dos2unix
-BuildRequires:	ImageMagick
 BuildRequires:	apache-base >= 2.0.54
 Provides:	acid
 Obsoletes:	acid
 BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
-BASE is the Basic Analysis and Security Engine. It is based on the
-code from the Analysis Console for Intrusion Databases (ACID)
-project.  This application provides a web front-end to query and
-analyze the alerts coming from a SNORT IDS system. BASE is a web
-interface to perform analysis of intrusions that snort has
-detected on your network. It uses a user authentication and
-role-base system, so that you as the security 'admin can decide
-what and how much information each user can see.  It also has a
-simple to use, web-based setup program for people not comfortable
-with editing files directly.
+BASE is the Basic Analysis and Security Engine. It is based on the code from
+the Analysis Console for Intrusion Databases (ACID) project. This application
+provides a web front-end to query and analyze the alerts coming from a SNORT
+IDS system. BASE is a web interface to perform analysis of intrusions that
+snort has detected on your network. It uses a user authentication and role-base
+system, so that you as the security 'admin can decide what and how much
+information each user can see.  It also has a simple to use, web-based setup
+program for people not comfortable with editing files directly.
 
 %prep
 
@@ -98,59 +94,13 @@ Alias /%{name} /var/www/%{name}
     Allow from All
 </Directory>
 
-<LocationMatch /%{name}>
-    Options FollowSymLinks
-    RewriteEngine on
-    RewriteCond %{SERVER_PORT} !^443$
-    RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
-</LocationMatch>
+#<LocationMatch /%{name}>
+#    Options FollowSymLinks
+#    RewriteEngine on
+#    RewriteCond %{SERVER_PORT} !^443$
+#    RewriteRule ^.*$ https://%{SERVER_NAME}%{REQUEST_URI} [L,R]
+#</LocationMatch>
 
-EOF
-
-# install script to call the web interface from the menu.
-install -d %{buildroot}%{_libdir}/%{name}/scripts
-cat > %{buildroot}%{_libdir}/%{name}/scripts/%{name} <<EOF
-#!/bin/sh
-
-url='https://localhost/%{name}'
-if ! [ -z "\$BROWSER" ] && ( which \$BROWSER ); then
-  browser=\`which \$BROWSER\`
-elif [ -x /usr/bin/mozilla-firefox ]; then
-  browser=/usr/bin/mozilla-firefox
-elif [ -x /usr/bin/konqueror ]; then
-  browser=/usr/bin/konqueror
-elif [ -x /usr/bin/lynx ]; then
-  browser='xterm -bg black -fg white -e lynx'
-elif [ -x /usr/bin/links ]; then
-  browser='xterm -bg black -fg white -e links'
-else
-  xmessage "No web browser found, install one or set the BROWSER environment variable!"
-  exit 1
-fi
-\$browser \$url
-EOF
-chmod 755 %{buildroot}%{_libdir}/%{name}/scripts/%{name}
-
-# Mandriva Icons
-install -d %{buildroot}%{_iconsdir}
-install -d %{buildroot}%{_miconsdir}
-install -d %{buildroot}%{_liconsdir}
-
-cp %{SOURCE1} snort_logo.png
-
-convert snort_logo.png -resize 16x16  %{buildroot}%{_miconsdir}/%{name}.png
-convert snort_logo.png -resize 32x32  %{buildroot}%{_iconsdir}/%{name}.png
-convert snort_logo.png -resize 48x48  %{buildroot}%{_liconsdir}/%{name}.png
-
-# install menu entry.
-install -d %{buildroot}%{_menudir}
-cat > %{buildroot}%{_menudir}/%{name} << EOF
-?package(%{name}): needs=X11 \
-section="System/Monitoring" \
-title="base" \
-longtitle="Basic Analysis and Security Engine.  Set the $BROWSER environment variable to choose your preferred browser." \
-command="%{_libdir}/%{name}/scripts/%{name} 1>/dev/null 2>/dev/null" \
-icon="%{name}.png"
 EOF
 
 # cleanup
@@ -161,11 +111,9 @@ rm -f %{buildroot}/var/www/%{name}/README.MDK
 %post
 ccp --delete --ifexists --set "NoOrphans" --ignoreopt config_version --oldfile %{_sysconfdir}/%{name}/base_conf.php --newfile %{_sysconfdir}/%{name}/base_conf.php.rpmnew
 %_post_webapp
-%update_menus
 
 %postun
 %_postun_webapp
-%clean_menus
 
 %clean
 [ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
@@ -177,9 +125,3 @@ ccp --delete --ifexists --set "NoOrphans" --ignoreopt config_version --oldfile %
 %dir %attr(0755,root,root) %{_sysconfdir}/%{name}
 %attr(0640,apache,root) %config(noreplace) %{_sysconfdir}/%{name}/base_conf.php
 /var/www/%{name}
-%attr(0755,root,root) %{_libdir}/%{name}/scripts/%{name}
-%{_menudir}/%{name}
-%{_iconsdir}/%{name}.png
-%{_miconsdir}/%{name}.png
-%{_liconsdir}/%{name}.png
-
