@@ -22,7 +22,6 @@ BuildRequires:	dos2unix
 BuildRequires:	apache-base >= 2.0.54
 Provides:	acid
 Obsoletes:	acid
-BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
 
 %description
 BASE is the Basic Analysis and Security Engine. It is based on the code from
