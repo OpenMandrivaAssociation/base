@@ -4,8 +4,8 @@
 
 Summary:	Basic Analysis and Security Engine
 Name:		base
-Version:	1.3.6
-Release:	%mkrel 3
+Version:	1.4.1
+Release:	%mkrel 1
 License:	GPL
 Group:		System/Servers
 URL:		http:/base.secureideas.net/
@@ -22,7 +22,7 @@ BuildRequires:	dos2unix
 BuildRequires:	apache-base >= 2.0.54
 Provides:	acid
 Obsoletes:	acid
-BuildRoot:	%{_tmppath}/%{name}-%{version}-buildroot
+BuildRoot:	%{_tmppath}/%{name}-%{version}-%{release}-buildroot
 
 %description
 BASE is the Basic Analysis and Security Engine. It is based on the code from
@@ -36,8 +36,10 @@ program for people not comfortable with editing files directly.
 
 %prep
 
-%setup -q
+%setup -q -n base-php4
 %patch0 -p0
+
+rm -rf docs/contrib
 
 # clean up CVS stuff
 for i in `find . -type d -name CVS` `find . -type f -name .cvs\*` `find . -type f -name .#\*`; do
@@ -60,7 +62,7 @@ find -type f | xargs perl -pi -e "s|\.\.\/\/etc\/base\/base_conf\.php|/etc/base/
 %build
 
 %install
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 install -d %{buildroot}%{_sysconfdir}/httpd/conf/webapps.d
 install -d %{buildroot}%{_sysconfdir}/%{name}
@@ -116,7 +118,7 @@ ccp --delete --ifexists --set "NoOrphans" --ignoreopt config_version --oldfile %
 %_postun_webapp
 
 %clean
-[ "%{buildroot}" != "/" ] && rm -rf %{buildroot}
+rm -rf %{buildroot}
 
 %files
 %defattr(-,root,root)
