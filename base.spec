@@ -4,16 +4,17 @@
 
 Summary:	Basic Analysis and Security Engine
 Name:		base
-Version:	1.4.1
+Version:	1.4.3.1
 Release:	%mkrel 1
-License:	GPL
+License:	GPLv2+
 Group:		System/Servers
-URL:		http:/base.secureideas.net/
-Source0:	http:/prdownloads.sourceforge.net/secureideas/%{name}-%{version}.tar.gz
+URL:		http://base.secureideas.net/
+Source0:	http://prdownloads.sourceforge.net/secureideas/%{name}-%{version}.tar.gz
 Patch0:		base-1.2.4-mdv_conf.diff
 Requires(pre):	apache-mod_php apache-mod_ssl php-mysql php-sockets php-adodb
 Requires:	apache-mod_php apache-mod_ssl php-mysql php-sockets php-adodb
 Requires(post):	ccp >= 0.4.0
+Requires(post):	rpm-helper
 Requires:	php-pear-Image_Graph
 Requires:	php-pear-Numbers_Words
 Requires:	php-pear-Image_Graph
@@ -36,7 +37,7 @@ program for people not comfortable with editing files directly.
 
 %prep
 
-%setup -q -n base-php4
+%setup -q
 %patch0 -p0
 
 rm -rf docs/contrib
