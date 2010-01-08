@@ -4,7 +4,7 @@
 
 Summary:	Basic Analysis and Security Engine
 Name:		base
-Version:	1.4.3.1
+Version:	1.4.4
 Release:	%mkrel 1
 License:	GPLv2+
 Group:		System/Servers
