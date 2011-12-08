@@ -54,7 +54,7 @@ find . -type d | xargs chmod 755
 find . -type f | xargs chmod 644
 
 # strip away annoying ^M
-find -type f | grep -v "\.gif" | grep -v "\.png" | grep -v "\.jpg" | xargs dos2unix -U
+find -type f | grep -v "\.gif" | grep -v "\.png" | grep -v "\.jpg" | xargs dos2unix
 
 # instead of a patch
 find -type f | xargs perl -pi -e "s|base_conf\.php|/etc/base/base_conf.php|g"
