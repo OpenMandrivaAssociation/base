@@ -1,0 +1,12 @@
+--- base_conf.php.dist	2006-05-17 18:43:54.000000000 +0200
++++ base_conf.php.dist.oden	2006-05-17 18:48:29.000000000 +0200
+@@ -62,8 +62,7 @@
+  *        $foo = 'c:\tmp'    [OK]
+  *        $foo = 'c:\tmp\'   [WRONG]
+  */
+-$DBlib_path = '';
+-
++$DBlib_path = '/usr/share/php-adodb';
+ 
+ /* The type of underlying alert database
+  * 
