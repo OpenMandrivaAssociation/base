@@ -8,7 +8,7 @@ Version:	1.4.4
 Release:	%mkrel 2
 License:	GPLv2+
 Group:		System/Servers
-URL:		http://base.secureideas.net/
+URL:		https://base.secureideas.net/
 Source0:	http://prdownloads.sourceforge.net/secureideas/%{name}-%{version}.tar.gz
 Patch0:		base-1.2.4-mdv_conf.diff
 Requires(pre):	apache-mod_php apache-mod_ssl php-mysql php-sockets php-adodb
