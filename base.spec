@@ -5,7 +5,7 @@
 Summary:	Basic Analysis and Security Engine
 Name:		base
 Version:	1.4.4
-Release:	%mkrel 2
+Release:	3
 License:	GPLv2+
 Group:		System/Servers
 URL:		https://base.secureideas.net/
